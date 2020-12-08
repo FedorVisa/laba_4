@@ -1,14 +1,10 @@
 ﻿#include<stdio.h>
 #include<stdlib.h>
 
-const char character[] = { 'A','a','E','e','Y','y','U','u','I','i','O','o' };
+char character[] = { 'A','a','E','e','Y','y','U','u','I','i','O','o' };
 
 int Checklet(char d) {
-    if ((d >= 'a') && (d <= 'z') || ((d >= 'A') && (d <= 'Z'))) {
-        return 1;
-    }
-    return 0;
-
+    return ((d >= 'a') && (d <= 'z') || ((d >= 'A') && (d <= 'Z')));
 }
 
 int isVowel(char a) {
@@ -57,8 +53,7 @@ char* get_string(int* len) {
 }
 
 int main() {
-    char* tmp = NULL;
-    int i, j, size;
+    int i, size;
     int blen;
     int words=0;
     printf(" enter string\n");
@@ -66,7 +61,7 @@ int main() {
     char* s = get_string(&blen);
  
     for (i = 0; i < blen; ++i) {
-        if (Checklet(s[i]) != 1) { s[i] = '\0'; 
+        if (!Checklet(s[i])) { s[i] = '\0'; 
         words++;
         }
     }
@@ -86,7 +81,6 @@ int main() {
     for (i = 0; i < size; ++i) {
         puts(array[i]);
     }
-    free(array);
     free(s);
     return 0;
 }
