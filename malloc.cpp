@@ -38,22 +38,29 @@ void swap(char** a, char** b) {
 char* get_string(int* len) {
     *len = 0; 
     int capacity = 1; 
-    char* s = (char*)malloc(sizeof(char));
+    char* old;
+    char* s;
+    if ((s = (char*)malloc(sizeof(char))) == NULL)exit(1);
     char c = getchar();
     while (c != '\n') {
         s[(*len)++] = c; 
         if (*len >= capacity) {
             capacity *= 2;
-            s = (char*)realloc(s, capacity * sizeof(char)); 
+            old = s;
+            if ((s = (char*)realloc(s, capacity * sizeof(char))) == NULL) {
+                free(old);
+                exit(1);
+            }
         }
         c = getchar();               
     }
+    if(s!= NULL)
     s[*len] = '\0'; 
     return s; 
 }
 
 int main() {
-    int i, size;
+    int i, size=0;
     int blen;
     int words=0;
     printf(" enter string\n");
@@ -61,12 +68,17 @@ int main() {
     char* s = get_string(&blen);
  
     for (i = 0; i < blen; ++i) {
-        if (!Checklet(s[i])) { s[i] = '\0'; 
-        words++;
+        if (!Checklet(s[i])) {
+            words++;
+            while (!Checklet(s[i])) {
+                s[i] = '\0';
+                ++i;
+            }   
         }
     }
-    char** array = (char**)malloc(words*sizeof(char*));
-    for (i = 0, size = 0; i <blen; ++i) {
+    char** array;
+    if ( (array = (char**)malloc(words * sizeof(char*))) == NULL)exit(1);
+    for (i = 0; i <blen; ++i) {
         if (s[i] != '\0') {
             array[size++] = &s[i];
             while (s[i] != '\0')++i;     
@@ -82,5 +94,6 @@ int main() {
         puts(array[i]);
     }
     free(s);
+    exit(0);
     return 0;
 }
